@@ -1,5 +1,4 @@
 SOURCES = server.c client.c utils.c
-OBJECTS = $(SOUCES:.c=.o)
 
 CC = gcc
 
@@ -7,23 +6,21 @@ CFLAGS = -Wall -Werror -Wextra
 
 all: server client
 
-ft_printf: 
-	make -sC ./ft_printf
+server: server.o utils.o
+	$(CC) $(CFLAGS) $^ -o $@
 
-server: server.o ft_printf minitalk.h
-	$(CC) -o $@ $< -L./ft_printf -lftprintf
+client: client.o utils.o
+	$(CC) $(CFLAGS) $^ -o $@
 
-client: client.o ft_printf minitalk.h
-	$(CC) -o $@ $< -L./ft_printf -lftprintf
 %.o: %.c
-	$(CC) -c $(CFLAGS) $?
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean: 
-	$(RM) *.o ./ft_printf/*.o
+	$(RM) *.o
 
 fclean: clean
-	$(RM) server client ft_printf/libftprintf.a
+	$(RM) server client
 
 re: fclean all
 
-.PHONY: all ft_printf clean fclean re
+.PHONY: all clean fclean re
